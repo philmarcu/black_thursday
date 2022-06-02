@@ -15,4 +15,12 @@ class Item
     @unit_price.to_f.round(2)
   end
 
+  def update_info(attributes)
+    attributes.each do |key, value|
+      @name = value if key == :name
+      @description = value if key == :description
+      @unit_price = value if key == :unit_price
+    end
+  end
+
 end
