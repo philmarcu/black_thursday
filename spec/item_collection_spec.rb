@@ -57,5 +57,43 @@ RSpec.describe ItemCollection do
    expect(@ic.find_all_by_merchant_id("12334195").count).to eq(12)
  end
 
+ it 'can create attributes' do
+   attributes = {
+                 id: 263400794,
+                 name: "Suede Jacket"
+               }
+   expect(@ic.all.length).to eq(41)
+   @ic.create(attributes)
+   expect(@ic.all.last.id).to eq("263400794")
+   expect(@ic.all.last.name).to eq("Suede Jacket")
+ end
+
+ it 'can update attributes' do
+   attributes = {
+                 name: "Oatmeal Cookies",
+                 description: "Warm delicious cookies",
+                 unit_price: "1500",
+                 updated_at: Time.now.to_s
+               }
+
+   expect(@ic.find_by_id("263398307").name).to eq("L&#39;enlèvement")
+   @ic.update("263398307", attributes)
+   expect(@ic.find_by_id("263398307").name).to eq("Oatmeal Cookies")
+   expect(@ic.find_by_id("263398307").description).to eq("Warm delicious cookies")
+   expect(@ic.find_by_id("263398307").unit_price).to eq("1500")
+ end
+
+ it 'can delete attributes' do
+   attributes = {
+                 id: 263400794,
+                 name: "Suede Jacket"
+               }
+   @ic.create(attributes)
+   expect(@ic.find_by_id("263400794")).to be_a(Item)
+   expect(@ic.all.length).to eq(42)
+   @ic.delete("263400794")
+   expect(@ic.find_by_id("263400794")).to eq(nil)
+   expect(@ic.all.length).to eq(41)
+ end
 
 end
