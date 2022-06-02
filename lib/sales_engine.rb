@@ -9,4 +9,5 @@ class SalesEngine
   def self.from_csv(data)
     SalesEngine.new(data[:items], data[:merchants])
   end
+
 end

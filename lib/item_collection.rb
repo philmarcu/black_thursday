@@ -7,7 +7,7 @@ class ItemCollection
     @file_path = file_path
     @all = []
 
-    CSV.foreach(file_path, headers: true, header_converters:      :symbol) do |row|
+    CSV.foreach(file_path, headers: true, header_converters: :symbol) do |row|
       @all << Item.new(:id => row[:id], :name => row[:name], :description => row[:description], :unit_price => row[:unit_price], :created_at => row[:created_at], :updated_at => row[:updated_at], :merchant_id => row[:merchant_id])
       end
   end
@@ -42,6 +42,26 @@ class ItemCollection
 
   def find_all_by_merchant_id(merchant_id)
     @all.find_all {|item| item.merchant_id == merchant_id}
+  end
+
+  def create(attributes)
+    max_id = @all.max_by {|item| item.id}
+    attributes[:id] = (max_id.id.to_i + 1).to_s
+    attributes[:created_at] = Time.now.to_s
+    attributes[:updated_at] = Time.now.to_s
+    new = Item.new(attributes)
+    @all.push(new)
+  end
+
+  def update(id, attributes)
+    updated = self.find_by_id(id)
+    updated.update_info(attributes)
+  end
+
+  def delete(id)
+    @all.delete_if do |item|
+      item.id == id
+    end
   end
 
 
