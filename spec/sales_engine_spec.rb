@@ -1,6 +1,7 @@
 require "./lib/sales_engine"
 require "./lib/item_collection"
 require "./lib/merchant_collection"
+require "./lib/sales_analyst"
 
 RSpec.describe SalesEngine do
 
