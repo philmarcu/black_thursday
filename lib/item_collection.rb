@@ -1,5 +1,5 @@
 require 'CSV'
-require "./lib/item"
+require_relative "item"
 class ItemCollection
 
   attr_reader :all
@@ -19,15 +19,9 @@ class ItemCollection
   def find_by_name(name)
     @all.find {|item| item.name.upcase == name.upcase}
   end
-## potential refactor
+
   def find_all_with_description(description)
-    item_d = []
-    @all.each do |item|
-      if item.description.upcase.include?(description.upcase)
-        item_d << item
-      end
-    end
-    item_d
+    @all.find_all {|item| item.description.upcase.include?(description.upcase)}
   end
 
   def find_all_by_price(price)
