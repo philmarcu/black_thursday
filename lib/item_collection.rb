@@ -61,6 +61,4 @@ class ItemCollection
   def group_by_merchant_id
     @all.group_by {|value| value.merchant_id}
   end
-
-
 end
