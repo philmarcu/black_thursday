@@ -20,15 +20,12 @@ class Analyst
 
   def total_items_per_merchant
     items_per = @ic.group_by_merchant_id
-    items_per.map do |merchant, items|
-      items.count
-    end
+    items_per.map {|merchant, items| items.count}
   end
 
   def square_diffs_of_total_items
     mean = average_items_per_merchant
     total_items_per_merchant.map {|item| square = (item - mean) ** 2}
-
   end
 
   def sum_of_total_item_nums

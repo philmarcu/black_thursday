@@ -27,6 +27,8 @@ RSpec.describe Analyst do
 
  it 'gets the square_diffs_of_total_items' do
    expect(@sales_analyst.square_diffs_of_total_items).to be_a(Array)
+   expect(@sales_analyst.square_diffs_of_total_items.first.round(2)).to eq(3.53)
+   expect(@sales_analyst.square_diffs_of_total_items[8].round(2)).to eq(4.49)
  end
 
  it 'gets the sum_of_total_item_nums' do
