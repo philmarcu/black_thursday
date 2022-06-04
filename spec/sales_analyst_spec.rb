@@ -34,7 +34,7 @@ RSpec.describe Analyst do
  end
 
  it 'returns the variance_of_items' do
-   expect(@sales_analyst.variance_of_items.round(2)).to eq(10.6)
+   expect(@sales_analyst.variance_of_items.round(2)).to eq(10.62)
  end
 
  it 'can return the average items by standard deviation' do
