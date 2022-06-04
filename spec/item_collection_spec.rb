@@ -96,4 +96,10 @@ RSpec.describe ItemCollection do
    expect(@ic.all.length).to eq(41)
  end
 
+ it 'can group by merchant ids' do
+   expect(@ic.group_by_merchant_id).to be_a(Hash)
+   expect(@ic.group_by_merchant_id["12334185"].count).to eq(3)
+   expect(@ic.group_by_merchant_id["12334185"][1].name).to eq("Disney scrabble frames")
+ end
+
 end

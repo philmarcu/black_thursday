@@ -20,7 +20,24 @@ RSpec.describe Analyst do
    expect(@sales_analyst.average_items_per_merchant).to eq(2.88)
  end
 
- xit 'can return the average items by standard deviation' do
+ it 'can give total items per merchant' do
+   expect(@sales_analyst.total_items_per_merchant).to be_a(Array)
+   expect(@sales_analyst.total_items_per_merchant[3]).to eq(20)
+ end
+
+ it 'gets the square_diffs_of_total_items' do
+   expect(@sales_analyst.square_diffs_of_total_items).to be_a(Array)
+ end
+
+ it 'gets the sum_of_total_item_nums' do
+   expect(@sales_analyst.sum_of_total_item_nums.round(2)).to eq(5034.92)
+ end
+
+ it 'returns the variance_of_items' do
+   expect(@sales_analyst.variance_of_items.round(2)).to eq(10.6)
+ end
+
+ it 'can return the average items by standard deviation' do
    expect(@sales_analyst.average_items_per_merchant_standard_deviation).to eq(3.26)
  end
 
