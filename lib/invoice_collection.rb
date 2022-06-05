@@ -47,5 +47,5 @@ class InvoiceCollection
       invoice.id == id
     end
   end
-
+######
 end
