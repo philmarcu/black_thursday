@@ -20,28 +20,32 @@ class InvoiceCollection
     @all.find_all {|invoice| invoice.customer_id == customer_id}
   end
 
-  # def find_all_by_name(name)
-  #   @all.find_all {|merchant| merchant.name.upcase.include?(name.upcase)}
-  # end
+  def find_all_by_merchant_id(merchant_id)
+    @all.find_all {|invoice| invoice.merchant_id == merchant_id}
+  end
+
+  def find_all_by_status(status)
+    @all.find_all {|invoice| invoice.status == status}
+  end
+### needs looking into , id returning as 1000 not 4986
+  def create(attributes)
+    max_id = @all.max_by {|invoice| invoice.id}
+    attributes[:id] = (max_id.id.to_i + 1).to_s
+    attributes[:created_at] = Time.now.to_s
+    attributes[:updated_at] = Time.now.to_s
+    new = Invoice.new(attributes)
+    @all.push(new)
+  end
   #
-  # def create(attributes)
-  #   max_id = @all.max_by {|merchant| merchant.id}
-  #   attributes[:id] = (max_id.id.to_i + 1).to_s
-  #   attributes[:created_at] = Time.now.to_s
-  #   attributes[:updated_at] = Time.now.to_s
-  #   new = Merchant.new(attributes)
-  #   @all.push(new)
-  # end
-  #
-  # def update(id, attributes)
-  #   updated = self.find_by_id(id)
-  #   updated.update_info(attributes)
-  # end
-  #
-  # def delete(id)
-  #   @all.delete_if do |merchant|
-  #     merchant.id == id
-  #   end
-  # end
+  def update(id, attributes)
+    updated = self.find_by_id(id)
+    updated.update_info(attributes)
+  end
+
+  def delete(id)
+    @all.delete_if do |invoice|
+      invoice.id == id
+    end
+  end
 
 end

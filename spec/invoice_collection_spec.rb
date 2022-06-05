@@ -28,48 +28,60 @@ RSpec.describe InvoiceCollection do
     expect(@inv_c.find_all_by_customer_id("1").length).to eq(8)
     expect(@inv_c.find_all_by_customer_id("81").length).to eq(6)
   end
-  #
-  # it 'can find all names given the characters' do
-  #   expect(@mc.find_all_by_name("ing").length).to eq(24)
-  #   expect(@mc.find_all_by_name("iNg").length).to eq(24)
-  #   expect(@mc.find_all_by_name("store").length).to eq(4)
-  #   expect(@mc.find_all_by_name("sToRe").length).to eq(4)
-  #   expect(@mc.find_all_by_name("uNIFoRd").length).to eq(1)
-  #   expect(@mc.find_all_by_name("uniford").first.id).to eq("12334174")
-  # end
-  #
-  # it 'can create attributes' do
-  #   attributes = {
-  #                 id: 12337412,
-  #                 name: "WingzandThingz"
-  #               }
-  #   expect(@mc.all.length).to eq(475)
-  #   @mc.create(attributes)
-  #   expect(@mc.all.length).to eq(476)
-  #   expect(@mc.all.last.name).to eq("WingzandThingz")
-  # end
-  #
-  # it 'can update attributes' do
-  #   attributes = {
-  #                 name: "Random212",
-  #                 updated_at: Time.now.to_s
-  #               }
-  #
-  #   expect(@mc.find_by_id("12337209").name).to eq("bizuteriaNYC")
-  #   @mc.update("12337209", attributes)
-  #   expect(@mc.find_by_id("12337209").name).to eq("Random212")
-  # end
-  #
-  # it 'can delete attributes' do
-  #   attributes = {
-  #                 id: 12337412,
-  #                 name: "WingzandThingz"
-  #               }
-  #   @mc.create(attributes)
-  #   expect(@mc.find_by_id("12337412")).to be_a(Merchant)
-  #   expect(@mc.all.length).to eq(476)
-  #   @mc.delete("12337412")
-  #   expect(@mc.find_by_id("12337412")).to eq(nil)
-  #   expect(@mc.all.length).to eq(475)
-  # end
+
+  it 'can find all by merchant id' do
+    expect(@inv_c.find_all_by_merchant_id("12336617").length).to eq(11)
+    expect(@inv_c.find_all_by_merchant_id("12334839").length).to eq(9)
+  end
+
+  it 'can find all by status' do
+    expect(@inv_c.find_all_by_status("shipped").length).to eq(2839)
+    expect(@inv_c.find_all_by_status("returned").length).to eq(673)
+  end
+### needs looking into
+  xit 'can create attributes' do
+    attributes = {
+                  customer_id: 1000,
+                  merchant_id: 12445541,
+                  status: "pending"
+                }
+    expect(@inv_c.all.length).to eq(4985)
+    @inv_c.create(attributes)
+    expect(@inv_c.all.length).to eq(4986)
+    expect(@inv_c.all.last.customer_id).to eq(1000)
+    expect(@inv_c.all.last.merchant_id).to eq(12445541)
+    require "pry"; binding.pry
+  end
+
+  xit 'can update attributes' do
+
+    attributes = {
+                  id: 4896,
+                  customer_id: 1000,
+                  merchant_id: 12445541,
+                  status: "shipped",
+                  updated_at: Time.now.to_s
+                }
+
+    @inv_c.create(attributes)
+    expect(@inv_c.find_by_id("1000").id).to eq("1000")
+    @inv_c.update("1000", attributes)
+    expect(@inv_c.find_by_id("1000").status).to eq("shipped")
+  end
+
+  xit 'can delete attributes' do
+    attributes = {
+                  id: 4896,
+                  customer_id: 1000,
+                  merchant_id: 12445541,
+                  status: "shipped",
+                  updated_at: Time.now.to_s
+                }
+    @inv_c.create(attributes)
+    expect(@inv_c.find_by_id("1000")).to be_a(Invoice)
+    expect(@inv_c.all.length).to eq(4986)
+    @inv_c.delete("1000")
+    expect(@inv_c.find_by_id("1000")).to eq(nil)
+    expect(@inv_c.all.length).to eq(4985)
+  end
 end
