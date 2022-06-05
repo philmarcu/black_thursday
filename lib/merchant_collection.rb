@@ -43,5 +43,4 @@ class MerchantCollection
       merchant.id == id
     end
   end
-
 end

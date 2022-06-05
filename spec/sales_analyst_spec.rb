@@ -1,13 +1,12 @@
 require "./lib/sales_engine"
-require "item_collection"
-require "merchant_collection"
 require "./lib/sales_analyst"
 
 RSpec.describe Analyst do
   before :each do
     @sales_engine = SalesEngine.from_csv({
             :items => "./data/items.csv",
-            :merchants => "./data/merchants.csv"
+            :merchants => "./data/merchants.csv",
+            :invoices => "./data/invoices.csv"
           })
     @sales_analyst = @sales_engine.analyst
   end

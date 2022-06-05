@@ -2,12 +2,14 @@ require "./lib/sales_engine"
 require "./lib/item_collection"
 require "./lib/merchant_collection"
 require "./lib/sales_analyst"
+require './lib/invoice_collection'
 
 RSpec.describe SalesEngine do
   before :each do
     @se = SalesEngine.from_csv({
         :items => "./data/items.csv",
-        :merchants => "./data/merchants.csv"
+        :merchants => "./data/merchants.csv",
+        :invoices => "./data/invoices.csv"
       })
   end
 
@@ -37,4 +39,7 @@ RSpec.describe SalesEngine do
     expect(sa.average_items_per_merchant).to eq(2.88)
   end
 
+  it 'can return an array of invoices' do
+    inv_c = @se.invoices
+  end
 end
