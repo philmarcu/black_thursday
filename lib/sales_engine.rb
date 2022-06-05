@@ -20,3 +20,6 @@ class SalesEngine
     SalesEngine.new(data[:items], data[:merchants], data[:invoices])
   end
 end
+
+# make a module that initializes all the classes / CSV reader or data finder module
+# creates the objects from the CSVs
