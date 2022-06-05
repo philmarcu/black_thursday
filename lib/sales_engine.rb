@@ -1,7 +1,7 @@
 require_relative './item_collection'
 require_relative './merchant_collection'
-require_relative './sales_analyst'
 require_relative './invoice_collection'
+require_relative './sales_analyst'
 
 class SalesEngine
 
