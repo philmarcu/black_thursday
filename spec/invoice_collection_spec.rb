@@ -39,37 +39,33 @@ RSpec.describe InvoiceCollection do
     expect(@inv_c.find_all_by_status("returned").length).to eq(673)
   end
 ### needs looking into
-  xit 'can create attributes' do
+  it 'can create attributes' do
     attributes = {
                   customer_id: 1000,
+                  id: 4986,
                   merchant_id: 12445541,
                   status: "pending"
                 }
     expect(@inv_c.all.length).to eq(4985)
     @inv_c.create(attributes)
     expect(@inv_c.all.length).to eq(4986)
-    expect(@inv_c.all.last.customer_id).to eq(1000)
+    expect(@inv_c.all.last.customer_id).to eq("1001")
     expect(@inv_c.all.last.merchant_id).to eq(12445541)
-    require "pry"; binding.pry
   end
 
-  xit 'can update attributes' do
+  it 'can update attributes' do
 
     attributes = {
-                  id: 4896,
-                  customer_id: 1000,
-                  merchant_id: 12445541,
-                  status: "shipped",
+                  status: "returned",
                   updated_at: Time.now.to_s
                 }
 
-    @inv_c.create(attributes)
-    expect(@inv_c.find_by_id("1000").id).to eq("1000")
-    @inv_c.update("1000", attributes)
-    expect(@inv_c.find_by_id("1000").status).to eq("shipped")
+    expect(@inv_c.find_by_id("4985").customer_id).to eq("999")
+    @inv_c.update("4985", attributes)
+    expect(@inv_c.find_by_id("4985").status).to eq("returned")
   end
 
-  xit 'can delete attributes' do
+  it 'can delete attributes' do
     attributes = {
                   id: 4896,
                   customer_id: 1000,
@@ -78,10 +74,10 @@ RSpec.describe InvoiceCollection do
                   updated_at: Time.now.to_s
                 }
     @inv_c.create(attributes)
-    expect(@inv_c.find_by_id("1000")).to be_a(Invoice)
+    expect(@inv_c.find_by_id("4896")).to be_a(Invoice)
     expect(@inv_c.all.length).to eq(4986)
-    @inv_c.delete("1000")
-    expect(@inv_c.find_by_id("1000")).to eq(nil)
+    @inv_c.delete("4896")
+    expect(@inv_c.find_by_id("4896")).to eq(nil)
     expect(@inv_c.all.length).to eq(4985)
   end
 end
