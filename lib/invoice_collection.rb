@@ -27,16 +27,16 @@ class InvoiceCollection
   def find_all_by_status(status)
     @all.find_all {|invoice| invoice.status == status}
   end
-### needs looking into , id returning as 1000 not 4986
+
   def create(attributes)
-    max_id = @all.max_by {|invoice| invoice.id}
-    attributes[:id] = (max_id.id.to_i + 1).to_s
+    attributes[:customer_id] = (@all.last.customer_id.to_i + 1 + 1).to_s
+    attributes[:id] = (@all.last.id.to_i + 1).to_s
     attributes[:created_at] = Time.now.to_s
     attributes[:updated_at] = Time.now.to_s
     new = Invoice.new(attributes)
     @all.push(new)
   end
-  #
+
   def update(id, attributes)
     updated = self.find_by_id(id)
     updated.update_info(attributes)
@@ -47,5 +47,5 @@ class InvoiceCollection
       invoice.id == id
     end
   end
-######
+
 end
