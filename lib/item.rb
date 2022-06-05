@@ -20,6 +20,7 @@ class Item
       @name = value if key == :name
       @description = value if key == :description
       @unit_price = value if key == :unit_price
+      @updated_at = value if key == :updated_at
     end
   end
 
