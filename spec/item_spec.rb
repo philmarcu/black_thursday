@@ -39,7 +39,7 @@ RSpec.describe Item do
       :updated_at  => Time.now,
       :merchant_id => 2
       })
-    attributes = { name: "Pen", description: "Writes with ink", unit_price: BigDecimal(20.99,4) }
+    attributes = { name: "Pen", description: "Writes with ink", unit_price: BigDecimal(20.99,4), :updated_at  => Time.now }
     expect(@i.id).to eq(1)
     @i.update_info(attributes)
     expect(@i.name).to eq("Pen")
