@@ -42,4 +42,23 @@ RSpec.describe Analyst do
    expect(@sales_analyst.average_items_per_merchant_standard_deviation).to eq(3.26)
  end
 
+ it 'can return one standard deviation above the merchant std dev' do
+   expect(@sales_analyst.one_std_dev_above_merchant_std_dev).to eq(6.14)
+ end
+
+ it 'can return merchants with high item count' do
+   expect(@sales_analyst.merchants_with_high_item_count.size).to eq(52)
+   expect(@sales_analyst.merchants_with_high_item_count.first.name).to eq("Keckenbauer")
+   expect(@sales_analyst.merchants_with_high_item_count.last.id).to eq("12336965")
+ end
+
+ it 'returns the item_count_for_merchant' do
+   expect(@sales_analyst.item_count_for_merchant("12336965")).to eq(10)
+ end
+
+ it 'returns the average item price for merchant' do
+   expect(@sales_analyst.average_item_price_for_merchant("12336965")).to eq(59910)
+   expect(@sales_analyst.average_item_price_for_merchant("12334159")).to eq(3150)
+   expect(@sales_analyst.average_item_price_for_merchant("12334159").class).to be(BigDecimal)
+ end
 end

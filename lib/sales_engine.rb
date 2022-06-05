@@ -4,7 +4,6 @@ require_relative './invoice_collection'
 require_relative './sales_analyst'
 
 class SalesEngine
-
   attr_reader :item_collection,
               :merchant_collection,
               :analyst,
@@ -20,6 +19,3 @@ class SalesEngine
     SalesEngine.new(data[:items], data[:merchants], data[:invoices])
   end
 end
-
-# make a module that initializes all the classes / CSV reader or data finder module
-# creates the objects from the CSVs
