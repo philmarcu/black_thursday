@@ -2,13 +2,19 @@ require "./lib/sales_engine"
 require "./lib/item_collection"
 require "./lib/merchant_collection"
 require "./lib/sales_analyst"
+require './lib/invoice_collection'
 
 RSpec.describe SalesEngine do
   before :each do
     @se = SalesEngine.from_csv({
         :items => "./data/items.csv",
-        :merchants => "./data/merchants.csv"
+        :merchants => "./data/merchants.csv",
+        :invoices => "./data/invoices.csv"
       })
+      @ic = @se.item_collection
+      @mc = @se.merchant_collection
+      @inv_c = @se.invoice_collection
+      @sa = @se.analyst
   end
 
   it "exists" do
@@ -16,25 +22,25 @@ RSpec.describe SalesEngine do
   end
 
   it "can return an array of all items" do
-    expect(@se.item_collection).to be_instance_of ItemCollection
+    expect(@ic).to be_instance_of ItemCollection
   end
 
   it "can return an array of all instances" do
-    expect(@se.merchant_collection).to be_instance_of MerchantCollection
+    expect(@mc).to be_instance_of MerchantCollection
   end
 
   it 'can return child instances' do
-    ic = @se.item_collection
-    item = ic.find_by_name("Thukdokhin wax cord")
+    item = @ic.find_by_name("Thukdokhin wax cord")
 
-    expect(ic).to be_a(ItemCollection)
     expect(item.id).to eq("263404585")
   end
 
   it 'can have a sales_analyst' do
-    sa = @se.analyst
-    expect(sa).to be_a(Analyst)
-    expect(sa.average_items_per_merchant).to eq(2.88)
+    expect(@sa).to be_a(Analyst)
+    expect(@sa.average_items_per_merchant).to eq(2.88)
   end
 
+  it 'can return an array of invoices' do
+    expect(@inv_c).to be_a(InvoiceCollection)
+  end
 end
