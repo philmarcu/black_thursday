@@ -1,11 +1,13 @@
 require 'CSV'
 require 'bigdecimal'
+require_relative 'mathable'
 require_relative 'item_collection'
 require_relative 'merchant_collection'
 require_relative 'invoice_collection'
 require_relative 'sales_engine'
 
 class Analyst
+  include Mathable
 
   attr_reader :ic, :mc, :inv_c
   def initialize
@@ -14,40 +16,8 @@ class Analyst
     @inv_c = InvoiceCollection.new("./data/invoices.csv")
   end
 
-  def average_items_per_merchant
-    item_total = @ic.all.length
-    merc_total = @mc.all.length
-    (item_total / merc_total.to_f).round(2)
-  end
-
-
-  def total_items_per_merchant
-    items_per = @ic.group_by_merchant_id
-    items_per.map {|merchant, items| items.count}
-  end
-
-  def square_diffs_of_total_items
-    mean = average_items_per_merchant
-    total_items_per_merchant.map {|item| (item - mean) ** 2}
-  end
-
-  def sum_of_total_item_nums
-    square_diffs_of_total_items.sum {|item| item}
-  end
-
-  def variance_of_items
-    sum_squares = sum_of_total_item_nums
-    merc_total = @mc.all.length
-    variance = (sum_squares / (merc_total.to_f - 1))
-  end
-
-  def average_items_per_merchant_standard_deviation
-    variance = variance_of_items
-    std_dev = Math.sqrt(variance).round(2)
-  end
-
   def one_std_dev_above_merchant_std_dev
-    mean= average_items_per_merchant
+    mean = average_items_per_merchant
     std_dev = average_items_per_merchant_standard_deviation
     (mean + std_dev)
   end
@@ -90,45 +60,15 @@ class Analyst
     # BigDecimal(final_output, avg)
   end
 
-  def collect_average_item_prices
-    avg_price_arr = []
-    @mc.all.each do |merchant|
-      avg_price_arr << average_item_price_for_merchant(merchant.id)
-    end
-    avg_price_arr
-  end
-
-  def avg_price_all
-    total = @ic.all.map {|item| item.unit_price}
-    sum = total.sum {|price| price.to_i}
-    avg = (sum / @ic.all.size.to_f)
-  end
-
-  def square_price_diffs
-    total = @ic.all.map {|item| item.unit_price}
-    mean = avg_price_all
-    total.map {|price| (price.to_i - mean) ** 2 }
-  end
-
-  def sum_of_total_price_diffs
-    square_price_diffs.sum {|price| price}
-  end
-
-  def price_variance
-    sum = sum_of_total_price_diffs
-    variance = (sum / (@ic.all.size.to_f - 1))
-
-  end
-
   def std_dev_of_prices_per_item
     variance = price_variance
-    std_dev = (Math.sqrt(variance).round(2) / 10)
+    std_dev = Math.sqrt(variance).round(2)
    end
 
   def average_average_price_per_merchant
     merc_total = @mc.all.size
-    sum = collect_average_item_prices.sum
-    final_output = ((sum / merc_total) / 100).to_f
+    sum = collect_average_item_prices.sum.to_f
+    final_output = (sum / merc_total)
     # BigDecimal(final_output) .round(2).to_s("F").to_f
   end
 
@@ -139,6 +79,6 @@ class Analyst
   end
 
   def golden_items
-
+    @ic.all.find_all {|item| item.unit_price.to_i > two_std_dev_above_prices_per_item}
   end
 end
