@@ -1,7 +1,7 @@
 require 'CSV'
 require_relative "invoice_item"
 
-class InvoiceItemCollection
+class InvoiceItemRepository
   attr_reader :all
   def initialize(file_path)
     @file_path = file_path

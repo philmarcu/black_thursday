@@ -1,13 +1,13 @@
 require './lib/merchant'
-require './lib/merchant_collection'
+require './lib/merchant_repository'
 
-RSpec.describe MerchantCollection do
+RSpec.describe MerchantRepository do
   before :each do
-    @mc = MerchantCollection.new("./data/merchants.csv")
+    @mc = MerchantRepository.new("./data/merchants.csv")
   end
 
   it 'exists & has attributes' do
-    expect(@mc).to be_a(MerchantCollection)
+    expect(@mc).to be_a(MerchantRepository)
     expect(@mc.all).to be_a(Array)
     expect(@mc.all.length).to eq(475)
   end

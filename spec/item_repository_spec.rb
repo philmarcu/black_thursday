@@ -1,16 +1,16 @@
 require './lib/merchant'
-require './lib/merchant_collection'
+require './lib/merchant_repository'
 require './lib/item'
-require "./lib/item_collection"
+require "./lib/item_repository"
 require 'bigdecimal'
 
-RSpec.describe ItemCollection do
+RSpec.describe ItemRepository do
  before :each do
-   @ic = ItemCollection.new("./data/items_sample.csv")
+   @ic = ItemRepository.new("./data/items_sample.csv")
  end
 
  it 'exists & has attributes' do
-   expect(@ic).to be_a(ItemCollection)
+   expect(@ic).to be_a(ItemRepository)
    expect(@ic.all).to be_a(Array)
    expect(@ic.all.length).to eq(41)
  end

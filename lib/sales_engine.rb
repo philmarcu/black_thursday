@@ -1,18 +1,18 @@
-require_relative './item_collection'
-require_relative './merchant_collection'
-require_relative './invoice_collection'
+require_relative './item_repository'
+require_relative './merchant_repository'
+require_relative './invoice_repository'
 require_relative './sales_analyst'
 
 class SalesEngine
-  attr_reader :item_collection,
-              :merchant_collection,
+  attr_reader :item_repository,
+              :merchant_repository,
               :analyst,
-              :invoice_collection
+              :invoice_repository
   def initialize(items_path, merc_path, inv_path)
-    @item_collection = ItemCollection.new(items_path)
-    @merchant_collection = MerchantCollection.new(merc_path)
-    @invoice_collection = InvoiceCollection.new(inv_path)
-    @analyst = Analyst.new
+    @item_repository = ItemRepository.new(items_path)
+    @merchant_repository = MerchantRepository.new(merc_path)
+    @invoice_repository = InvoiceRepository.new(inv_path)
+    @analyst = SalesAnalyst.new
   end
 
   def self.from_csv(data)
