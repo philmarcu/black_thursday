@@ -1,12 +1,12 @@
-require './lib/invoice_item_collection'
+require './lib/invoice_item_repository'
 
-RSpec.describe InvoiceItemCollection do
+RSpec.describe InvoiceItemRepository do
   before :each do
-    @inv_ic = InvoiceItemCollection.new("./data/invoice_items.csv")
+    @inv_ic = InvoiceItemRepository.new("./data/invoice_items.csv")
   end
 
   it 'exists & has attributes' do
-    expect(@inv_ic).to be_a(InvoiceItemCollection)
+    expect(@inv_ic).to be_a(InvoiceItemRepository)
     expect(@inv_ic.all).to be_a(Array)
     expect(@inv_ic.all.length).to eq(21830)
   end

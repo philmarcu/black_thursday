@@ -1,8 +1,8 @@
 require "./lib/sales_engine"
-require "./lib/item_collection"
-require "./lib/merchant_collection"
+require "./lib/item_repository"
+require "./lib/merchant_repository"
 require "./lib/sales_analyst"
-require './lib/invoice_collection'
+require './lib/invoice_repository'
 
 RSpec.describe SalesEngine do
   before :each do
@@ -11,9 +11,9 @@ RSpec.describe SalesEngine do
         :merchants => "./data/merchants.csv",
         :invoices => "./data/invoices.csv"
       })
-      @ic = @se.item_collection
-      @mc = @se.merchant_collection
-      @inv_c = @se.invoice_collection
+      @ic = @se.item_repository
+      @mc = @se.merchant_repository
+      @inv_c = @se.invoice_repository
       @sa = @se.analyst
   end
 
@@ -22,11 +22,11 @@ RSpec.describe SalesEngine do
   end
 
   it "can return an array of all items" do
-    expect(@ic).to be_instance_of ItemCollection
+    expect(@ic).to be_instance_of ItemRepository
   end
 
   it "can return an array of all instances" do
-    expect(@mc).to be_instance_of MerchantCollection
+    expect(@mc).to be_instance_of MerchantRepository
   end
 
   it 'can return child instances' do
@@ -36,11 +36,11 @@ RSpec.describe SalesEngine do
   end
 
   it 'can have a sales_analyst' do
-    expect(@sa).to be_a(Analyst)
+    expect(@sa).to be_a(SalesAnalyst)
     expect(@sa.average_items_per_merchant).to eq(2.88)
   end
 
   it 'can return an array of invoices' do
-    expect(@inv_c).to be_a(InvoiceCollection)
+    expect(@inv_c).to be_a(InvoiceRepository)
   end
 end

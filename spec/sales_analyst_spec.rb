@@ -1,7 +1,7 @@
 require "./lib/sales_engine"
 require "./lib/sales_analyst"
 
-RSpec.describe Analyst do
+RSpec.describe SalesAnalyst do
   before :each do
     @sales_engine = SalesEngine.from_csv({
             :items => "./data/items.csv",
@@ -12,7 +12,7 @@ RSpec.describe Analyst do
   end
 
  it 'exist' do
-   expect(@sales_analyst).to be_a(Analyst)
+   expect(@sales_analyst).to be_a(SalesAnalyst)
  end
 
  it 'calculates average items per merchant' do

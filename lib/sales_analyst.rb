@@ -1,19 +1,19 @@
 require 'CSV'
 require 'bigdecimal'
 require_relative 'mathable'
-require_relative 'item_collection'
-require_relative 'merchant_collection'
-require_relative 'invoice_collection'
+require_relative 'item_repository'
+require_relative 'merchant_repository'
+require_relative 'invoice_repository'
 require_relative 'sales_engine'
 
-class Analyst
+class SalesAnalyst
   include Mathable
 
   attr_reader :ic, :mc, :inv_c
   def initialize
-    @ic = ItemCollection.new("./data/items.csv")
-    @mc = MerchantCollection.new("./data/merchants.csv")
-    @inv_c = InvoiceCollection.new("./data/invoices.csv")
+    @ic = ItemRepository.new("./data/items.csv")
+    @mc = MerchantRepository.new("./data/merchants.csv")
+    @inv_c = InvoiceRepository.new("./data/invoices.csv")
   end
 
   def one_std_dev_above_merchant_std_dev
