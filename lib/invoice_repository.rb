@@ -30,4 +30,8 @@ class InvoiceRepository
     new = Invoice.new(attributes)
     @all.push(new)
   end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
+  end
 end

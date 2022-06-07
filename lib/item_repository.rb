@@ -36,4 +36,8 @@ class ItemRepository
     new = Item.new(attributes)
     @all.push(new)
   end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
+  end
 end
