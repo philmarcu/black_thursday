@@ -3,17 +3,20 @@ require "./lib/item_repository"
 require "./lib/merchant_repository"
 require "./lib/sales_analyst"
 require './lib/invoice_repository'
+require './lib/transaction_repository'
 
 RSpec.describe SalesEngine do
   before :each do
     @se = SalesEngine.from_csv({
         :items => "./data/items.csv",
         :merchants => "./data/merchants.csv",
-        :invoices => "./data/invoices.csv"
+        :invoices => "./data/invoices.csv",
+        :tranactions => ("./data/transactions.csv")
       })
       @ic = @se.item_repository
       @mc = @se.merchant_repository
       @inv_c = @se.invoice_repository
+      @t_repo = @se.transaction_repository
       @sa = @se.analyst
   end
 
@@ -41,6 +44,7 @@ RSpec.describe SalesEngine do
   end
 
   it 'can return an array of invoices' do
+    require "pry"; binding.pry
     expect(@inv_c).to be_a(InvoiceRepository)
   end
 end

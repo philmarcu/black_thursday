@@ -9,11 +9,12 @@ require_relative 'sales_engine'
 class SalesAnalyst
   include Mathable
 
-  attr_reader :ic, :mc, :inv_c
+  attr_reader :ic, :mc, :inv_c, :t_repo
   def initialize(engine)
     @ic = engine.item_repository
     @mc = engine.merchant_repository
     @inv_c = engine.invoice_repository
+    @t_repo = engine.transaction_repository
   end
 
   def average_items_per_merchant
