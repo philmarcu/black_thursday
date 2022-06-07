@@ -1,7 +1,9 @@
 require 'CSV'
 require_relative "transaction"
+require_relative "findable"
 
 class TransactionRepository
+  include Findable
   attr_reader :all
   def initialize(file_path)
     @file_path = file_path
@@ -10,10 +12,6 @@ class TransactionRepository
     CSV.foreach(file_path, headers: true, header_converters: :symbol) do |row|
       @all << Transaction.new(:id => row[:id], :invoice_id => row[:invoice_id], :credit_card_number => row[:credit_card_number], :credit_card_expiration_date => row[:credit_card_expiration_date], :result => row[:result], :created_at => row[:created_at], :updated_at => row[:updated_at])
     end
-  end
-
-  def find_by_id(id)
-    @all.find {|transaction| transaction.id == id}
   end
 
   def find_all_by_invoice_id(invoice_id)
@@ -39,16 +37,4 @@ class TransactionRepository
     new = Transaction.new(attributes)
     @all.push(new)
   end
-
-  def update(id, attributes)
-    updated = self.find_by_id(id)
-    updated.update_info(attributes)
-  end
-
-  def delete(id)
-    @all.delete_if do |transaction|
-      transaction.id == id
-    end
-  end
-
 end

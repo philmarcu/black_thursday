@@ -1,6 +1,8 @@
 require 'CSV'
 require_relative 'merchant'
+require_relative 'findable'
 class MerchantRepository
+  include Findable
 
   attr_reader :all
   def initialize(file_path)
@@ -12,18 +14,6 @@ class MerchantRepository
     end
   end
 
-  def find_by_id(id)
-    @all.find {|merchant| merchant.id == id}
-  end
-
-  def find_by_name(name)
-    @all.find {|merchant| merchant.name == name}
-  end
-
-  def find_all_by_name(name)
-    @all.find_all {|merchant| merchant.name.upcase.include?(name.upcase)}
-  end
-
   def create(attributes)
     max_id = @all.max_by {|merchant| merchant.id}
     attributes[:id] = (max_id.id.to_i + 1).to_s
@@ -33,23 +23,7 @@ class MerchantRepository
     @all.push(new)
   end
 
-  def update(id, attributes)
-    updated = self.find_by_id(id)
-    updated.update_info(attributes)
-  end
-
-  def delete(id)
-    @all.delete_if do |merchant|
-      merchant.id == id
-    end
-  end
-
-  def group_by_merchant_id
-    @all.group_by {|value| value.merchant_id}
-  end
-
   def inspect
     "#<#{self.class} #{@all.size} rows>"
   end
-
 end

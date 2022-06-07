@@ -1,7 +1,9 @@
 require 'CSV'
 require_relative "invoice"
+require_relative "findable"
 
 class InvoiceRepository
+  include Findable
   attr_reader :all
   def initialize(file_path)
     @file_path = file_path
@@ -12,16 +14,8 @@ class InvoiceRepository
     end
   end
 
-  def find_by_id(id)
-    @all.find {|invoice| invoice.id == id}
-  end
-
   def find_all_by_customer_id(customer_id)
     @all.find_all {|invoice| invoice.customer_id == customer_id}
-  end
-
-  def find_all_by_merchant_id(merchant_id)
-    @all.find_all {|invoice| invoice.merchant_id == merchant_id}
   end
 
   def find_all_by_status(status)
@@ -37,23 +31,7 @@ class InvoiceRepository
     @all.push(new)
   end
 
-  def update(id, attributes)
-    updated = self.find_by_id(id)
-    updated.update_info(attributes)
-  end
-
-  def delete(id)
-    @all.delete_if do |invoice|
-      invoice.id == id
-    end
-  end
-
-  def group_by_merchant_id
-    @all.group_by {|value| value.merchant_id}
-  end
-
   def inspect
     "#<#{self.class} #{@all.size} rows>"
   end
-
 end

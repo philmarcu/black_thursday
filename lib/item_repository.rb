@@ -1,6 +1,8 @@
 require 'CSV'
 require_relative "item"
+require_relative 'findable'
 class ItemRepository
+  include Findable
 
   attr_reader :all
   def initialize(file_path)
@@ -12,16 +14,8 @@ class ItemRepository
       end
   end
 
-  def find_by_id(id)
-    @all.find {|item| item.id == id}
-  end
-
   def find_by_name(name)
     @all.find {|item| item.name.upcase == name.upcase}
-  end
-
-  def find_all_with_description(description)
-    @all.find_all {|item| item.description.upcase.include?(description.upcase)}
   end
 
   def find_all_by_price(price)
@@ -34,10 +28,6 @@ class ItemRepository
     end
   end
 
-  def find_all_by_merchant_id(merchant_id)
-    @all.find_all {|item| item.merchant_id == merchant_id}
-  end
-
   def create(attributes)
     max_id = @all.max_by {|item| item.id}
     attributes[:id] = (max_id.id.to_i + 1).to_s
@@ -47,23 +37,7 @@ class ItemRepository
     @all.push(new)
   end
 
-  def update(id, attributes)
-    updated = self.find_by_id(id)
-    updated.update_info(attributes)
-  end
-
-  def delete(id)
-    @all.delete_if do |item|
-      item.id == id
-    end
-  end
-
-  def group_by_merchant_id
-    @all.group_by {|value| value.merchant_id}
-  end
-
   def inspect
     "#<#{self.class} #{@all.size} rows>"
   end
-
 end

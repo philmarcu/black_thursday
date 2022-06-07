@@ -1,6 +1,8 @@
 require 'CSV'
 require 'bigdecimal'
-require_relative 'mathable'
+require_relative 'itemable'
+require_relative 'priceable'
+require_relative 'invoiceable'
 require_relative 'item_repository'
 require_relative 'merchant_repository'
 require_relative 'invoice_repository'
@@ -8,7 +10,9 @@ require_relative 'customer_repository'
 require_relative 'sales_engine'
 
 class SalesAnalyst
-  include Mathable
+  include Itemable
+    include Priceable
+      include Invoiceable
 
   attr_reader :ic, :mc, :inv_c, :t_repo, :c
   def initialize(engine)
@@ -65,5 +69,22 @@ class SalesAnalyst
     inv_total = @inv_c.all.length
     merc_total = @mc.all.length
     (inv_total / merc_total.to_f).round(2)
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    variance = invoice_variance
+    Math.sqrt(variance).round(2)
+  end
+
+  def top_merchants_by_invoice_count
+    invoices_per = merc_inv_hash
+    merchs = invoices_per.select {|merchants, invoice| invoice > two_std_dev_above_inv_std_dev}
+    merchs.keys
+  end
+
+  def bottom_merchants_by_invoice_count
+    invoices_per = merc_inv_hash
+    merchs = invoices_per.select {|merchants, invoice| invoice < two_std_dev_below_inv_std_dev}
+    merchs.keys
   end
 end
