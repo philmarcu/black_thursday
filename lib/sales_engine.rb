@@ -9,12 +9,14 @@ class SalesEngine
               :merchant_repository,
               :invoice_repository,
               :transaction_repository,
+              :customer_repository,
               :analyst
   def initialize(data)
     @item_repository = ItemRepository.new(data[:items])
     @merchant_repository = MerchantRepository.new(data[:merchants])
     @invoice_repository = InvoiceRepository.new(data[:invoices])
     @transaction_repository = TransactionRepository.new(data[:transactions])
+    @customer_repository = CustomerRepository.new(data[:customers])
     @analyst = SalesAnalyst.new(self)
   end
 

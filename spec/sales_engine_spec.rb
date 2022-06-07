@@ -4,6 +4,7 @@ require "./lib/merchant_repository"
 require "./lib/sales_analyst"
 require './lib/invoice_repository'
 require './lib/transaction_repository'
+require './lib/customer_repository'
 
 RSpec.describe SalesEngine do
   before :each do
@@ -11,12 +12,14 @@ RSpec.describe SalesEngine do
         :items => "./data/items.csv",
         :merchants => "./data/merchants.csv",
         :invoices => "./data/invoices.csv",
-        :tranactions => ("./data/transactions.csv")
+        :transactions => ("./data/transactions.csv"),
+        :customers => ("./data/customers.csv")
       })
       @ic = @se.item_repository
       @mc = @se.merchant_repository
       @inv_c = @se.invoice_repository
       @t_repo = @se.transaction_repository
+      @c = @se.customer_repository
       @sa = @se.analyst
   end
 
