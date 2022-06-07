@@ -103,18 +103,31 @@ RSpec.describe SalesAnalyst do
    expect(@sales_analyst.average_invoices_per_merchant).to eq(10.49)
  end
 
- it 'has a merchant invoice count hash' do
+ it 'has a merchant_id invoice count hash' do
    first_merc_id = @sales_analyst.merc_invoice_count.first
 
-   expect(@sales_analyst.merc_invoice_count).to be_a(Hash)
-   expect(first_merc_id.count).to eq(16)
+   expect(@sales_analyst.merc_invoice_count).to be_a(Array)
+   expect(first_merc_id).to eq(16)
  end
 
  it 'can get the square & sum of total invoices' do
-   expect(@sales_analyst.square_sum_of_total_invoices).to eq(4985)
+   expect(@sales_analyst.square_sum_of_total_invoices).to eq(5132.7475)
  end
 
  it 'can get the invoice variance' do
-   expect(@sales_analyst.invoice_variance.round(2)).to eq(10.52)
+   expect(@sales_analyst.invoice_variance.round(2)).to eq(10.83)
+ end
+
+ it 'returns average_invoices_per_merchant_standard_deviation' do
+   expect(@sales_analyst.average_invoices_per_merchant_standard_deviation).to eq(3.29)
+ end
+
+ it 'can return a merchant invoice hash' do
+   expect(@sales_analyst.merc_inv_hash).to be_a(Hash)
+ end
+
+ it 'gives us top_merchants_by_invoice_count' do
+   expect(@sales_analyst.top_merchants_by_invoice_count).to be_a(Array)
+   expect(@sales_analyst.top_merchants_by_invoice_count.size).to eq(12)
  end
 end
