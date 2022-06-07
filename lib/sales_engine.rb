@@ -8,14 +8,14 @@ class SalesEngine
               :merchant_repository,
               :analyst,
               :invoice_repository
-  def initialize(items_path, merc_path, inv_path)
-    @item_repository = ItemRepository.new(items_path)
-    @merchant_repository = MerchantRepository.new(merc_path)
-    @invoice_repository = InvoiceRepository.new(inv_path)
-    @analyst = SalesAnalyst.new
+  def initialize(data)
+    @item_repository = ItemRepository.new(data[:items])
+    @merchant_repository = MerchantRepository.new(data[:merchants])
+    @invoice_repository = InvoiceRepository.new(data[:invoices])
+    @analyst = SalesAnalyst.new(self)
   end
 
   def self.from_csv(data)
-    SalesEngine.new(data[:items], data[:merchants], data[:invoices])
+    SalesEngine.new(data)
   end
 end

@@ -43,4 +43,8 @@ class MerchantRepository
       merchant.id == id
     end
   end
+
+  def group_by_merchant_id
+    @all.group_by {|value| value.merchant_id}
+  end
 end
