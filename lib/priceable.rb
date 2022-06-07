@@ -1,11 +1,9 @@
 module Priceable
 
   def collect_average_item_prices
-    avg_price_arr = []
-    @mc.all.each do |merchant|
-      avg_price_arr << average_item_price_for_merchant(merchant.id)
+    @mc.all.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
     end
-    avg_price_arr
   end
 
   def avg_price_all

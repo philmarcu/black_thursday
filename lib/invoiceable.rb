@@ -23,6 +23,9 @@ module Invoiceable
   end
 
   def two_std_dev_below_inv_std_dev
+    mean = average_invoices_per_merchant
+    std_dev = average_invoices_per_merchant_standard_deviation
+    (mean - (std_dev * 2))
   end
 
   def merc_inv_hash
@@ -37,4 +40,6 @@ module Invoiceable
     end
     mc_inv_hash
   end
+
+
 end

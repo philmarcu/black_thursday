@@ -78,4 +78,10 @@ class SalesAnalyst
     merchs = invoices_per.select {|merchants, invoice| invoice > two_std_dev_above_inv_std_dev}
     merchs.keys
   end
+
+  def bottom_merchants_by_invoice_count
+    invoices_per = merc_inv_hash
+    merchs = invoices_per.select {|merchants, invoice| invoice < two_std_dev_below_inv_std_dev}
+    merchs.keys
+  end
 end
