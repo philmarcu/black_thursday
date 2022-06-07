@@ -1,7 +1,9 @@
 require 'CSV'
 require_relative "invoice_item"
+require_relative "findable"
 
 class InvoiceItemRepository
+  include Findable
   attr_reader :all
   def initialize(file_path)
     @file_path = file_path
@@ -16,10 +18,6 @@ class InvoiceItemRepository
                               :created_at => row[:created_at],
                               :updated_at => row[:updated_at])
     end
-  end
-
-  def find_by_id(id)
-    @all.find {|invoice_item| invoice_item.id == id}
   end
 
   def find_all_by_item_id(item_id)
@@ -40,16 +38,4 @@ class InvoiceItemRepository
     new = InvoiceItem.new(attributes)
     @all.push(new)
   end
-
-  def update(id, attributes)
-    updated = self.find_by_id(id)
-    updated.update_info(attributes)
-  end
-
-  def delete(id)
-    @all.delete_if do |invoice|
-      invoice.id == id
-    end
-  end
-
 end
