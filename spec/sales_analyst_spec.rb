@@ -6,7 +6,9 @@ RSpec.describe SalesAnalyst do
     @sales_engine = SalesEngine.from_csv({
             :items => "./data/items.csv",
             :merchants => "./data/merchants.csv",
-            :invoices => "./data/invoices.csv"
+            :invoices => "./data/invoices.csv",
+            :transactions => ("./data/transactions.csv"),
+            :customers => ("./data/customers.csv")
           })
     @sales_analyst = @sales_engine.analyst
   end

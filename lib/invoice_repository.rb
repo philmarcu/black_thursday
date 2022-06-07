@@ -51,4 +51,9 @@ class InvoiceRepository
   def group_by_merchant_id
     @all.group_by {|value| value.merchant_id}
   end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
+  end
+
 end
