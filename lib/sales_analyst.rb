@@ -10,16 +10,21 @@ class SalesAnalyst
   include Mathable
 
   attr_reader :ic, :mc, :inv_c
-  def initialize
-    @ic = ItemRepository.new("./data/items.csv")
-    @mc = MerchantRepository.new("./data/merchants.csv")
-    @inv_c = InvoiceRepository.new("./data/invoices.csv")
+  def initialize(engine)
+    @ic = engine.item_repository
+    @mc = engine.merchant_repository
+    @inv_c = engine.invoice_repository
   end
 
-  def one_std_dev_above_merchant_std_dev
-    mean = average_items_per_merchant
-    std_dev = average_items_per_merchant_standard_deviation
-    (mean + std_dev)
+  def average_items_per_merchant
+    item_total = @ic.all.length
+    merc_total = @mc.all.length
+    (item_total/ merc_total.to_f).round(2)
+  end
+
+  def average_items_per_merchant_standard_deviation
+    variance = variance_of_items
+    std_dev = Math.sqrt(variance).round(2)
   end
 
   def merchants_with_high_item_count
@@ -27,29 +32,6 @@ class SalesAnalyst
       items = @ic.find_all_by_merchant_id(merchant.id)
       items.count > one_std_dev_above_merchant_std_dev
     end
-  end
-
-  def sum_of_unit_prices(merchant_id)
-    sum_per_merc = 0
-    @ic.all.each do |item|
-      if item.merchant_id == merchant_id
-        sum_per_merc += item.unit_price.to_i
-      end
-    end
-    sum_per_merc
-  end
-
-  def item_count_for_merchant(merchant_id)
-    item_count = 0
-    items_per = @ic.group_by_merchant_id
-    items_per.each do |merchant, items|
-      items.each do |item|
-        if item.merchant_id == merchant_id
-          item_count += 1
-        end
-      end
-    end
-    item_count
   end
 
   def average_item_price_for_merchant(merchant_id)
@@ -62,7 +44,7 @@ class SalesAnalyst
 
   def std_dev_of_prices_per_item
     variance = price_variance
-    std_dev = Math.sqrt(variance).round(2)
+    Math.sqrt(variance).round(2)
    end
 
   def average_average_price_per_merchant
@@ -72,13 +54,13 @@ class SalesAnalyst
     # BigDecimal(final_output) .round(2).to_s("F").to_f
   end
 
-  def two_std_dev_above_prices_per_item
-    mean = avg_price_all
-    std_dev = std_dev_of_prices_per_item
-    (((mean + std_dev) * 2).to_f).round(2)
-  end
-
   def golden_items
     @ic.all.find_all {|item| item.unit_price.to_i > two_std_dev_above_prices_per_item}
+  end
+
+  def average_invoices_per_merchant
+    inv_total = @inv_c.all.length
+    merc_total = @mc.all.length
+    (inv_total / merc_total.to_f).round(2)
   end
 end

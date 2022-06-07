@@ -80,4 +80,10 @@ RSpec.describe InvoiceRepository do
     expect(@inv_c.find_by_id("4896")).to eq(nil)
     expect(@inv_c.all.length).to eq(4985)
   end
+
+  it 'can group by merchant ids' do
+    expect(@inv_c.group_by_merchant_id).to be_a(Hash)
+    expect(@inv_c.group_by_merchant_id["12334185"].count).to eq(10)
+    expect(@inv_c.group_by_merchant_id["12334185"].first.id).to eq("1495")
+  end
 end

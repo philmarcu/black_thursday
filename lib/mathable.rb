@@ -1,12 +1,5 @@
 module Mathable
 
-  def average_items_per_merchant
-    item_total = @ic.all.length
-    merc_total = @mc.all.length
-    (item_total / merc_total.to_f).round(2)
-  end
-
-
   def total_items_per_merchant
     items_per = @ic.group_by_merchant_id
     items_per.map {|merchant, items| items.count}
@@ -24,12 +17,36 @@ module Mathable
   def variance_of_items
     sum_squares = sum_of_total_item_nums
     merc_total = @mc.all.length
-    variance = (sum_squares / (merc_total.to_f - 1))
+    (sum_squares / (merc_total.to_f - 1))
   end
 
-  def average_items_per_merchant_standard_deviation
-    variance = variance_of_items
-    std_dev = Math.sqrt(variance).round(2)
+  def one_std_dev_above_merchant_std_dev
+    mean = average_items_per_merchant
+    std_dev = average_items_per_merchant_standard_deviation
+    (mean + std_dev)
+  end
+
+  def item_count_for_merchant(merchant_id)
+    item_count = 0
+    items_per = @ic.group_by_merchant_id
+    items_per.each do |merchant, items|
+      items.each do |item|
+        if item.merchant_id == merchant_id
+          item_count += 1
+        end
+      end
+    end
+    item_count
+  end
+
+  def sum_of_unit_prices(merchant_id)
+    sum_per_merc = 0
+    @ic.all.each do |item|
+      if item.merchant_id == merchant_id
+        sum_per_merc += item.unit_price.to_i
+      end
+    end
+    sum_per_merc
   end
 
 # --- Temporary Divider --- #
@@ -60,6 +77,29 @@ module Mathable
 
   def price_variance
     sum = sum_of_total_price_diffs
-    variance = (sum / (@ic.all.size.to_f - 1))
+    (sum / (@ic.all.size.to_f - 1))
+  end
+
+  def two_std_dev_above_prices_per_item
+    mean = avg_price_all
+    std_dev = std_dev_of_prices_per_item
+    (((mean + std_dev) * 2).to_f).round(2)
+  end
+
+  def merc_invoice_count
+  invoices_per = @inv_c.group_by_merchant_id
+  invoices_per.map {|merchant, invoice| invoice.count}
+  end
+
+  def square_sum_of_total_invoices
+    mean = average_invoices_per_merchant
+    merc_invoice_count.map {|invoice| (invoice - mean) ** 2}
+    sum = merc_invoice_count.sum {|invoice| invoice}
+  end
+
+  def invoice_variance
+    sum = square_sum_of_total_invoices
+    merc_total = @mc.all.size
+    (sum / (merc_total.to_f - 1))
   end
 end
