@@ -8,6 +8,7 @@ require_relative 'item_repository'
 require_relative 'merchant_repository'
 require_relative 'invoice_repository'
 require_relative 'customer_repository'
+require_relative 'invoice_item_repository'
 require_relative 'sales_engine'
 
 class SalesAnalyst
@@ -16,13 +17,14 @@ class SalesAnalyst
       include Invoiceable
         include Dayable
 
-  attr_reader :ic, :mc, :inv_c, :t_repo, :c
+  attr_reader :ic, :mc, :inv_c, :t_repo, :c, :ii
   def initialize(engine)
     @ic = engine.item_repository
     @mc = engine.merchant_repository
     @inv_c = engine.invoice_repository
     @t_repo = engine.transaction_repository
     @c = engine.customer_repository
+    @ii = engine.invoice_item_repository
   end
 
   def average_items_per_merchant
@@ -106,4 +108,65 @@ class SalesAnalyst
     @inv_c.all.length)
   end
 
+  def invoice_paid_in_full?(invoice_id)
+   transactions = @t_repo.find_all_by_result("success")
+   transactions.any? do |transaction|
+     invoice_id == transaction.invoice_id
+   end
+  end
+
+  def invoice_total(invoice_id)
+    if invoice_paid_in_full?(invoice_id) == true
+      @ii.find_all_by_invoice_id(invoice_id).sum do |invoice|
+        invoice.unit_price.to_i * invoice.quantity.to_i
+      end
+    end
+  end
+
+  def total_revenue_by_date(date)
+    date_rev = 0
+    @ii.all.each do |item|
+      if item.created_at == date
+        date_rev += (item.unit_price.to_i * item.quantity.to_i)
+      end
+    end
+    date_rev
+  end
+
+  def merchants_with_pending_invoices
+    pending_mercs = []
+    pending = status_hash["pending"]
+     @mc.all.each do |merchant|
+       pending.each do |invoice|
+        if merchant.id == invoice.merchant_id
+          pending_mercs << merchant
+        end
+      end
+    end
+    pending_mercs
+  end
+
+  def merchants_with_only_one_item
+    mercs = item_merchant_hash.select {|merchant, value| value == 1}
+    mercs.keys
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.find_all do |merchant|
+      DateTime.parse(merchant.created_at).strftime('%B') == month
+    end
+  end
+
+  def revenue_by_merchant(merchant_id)
+    item_merchants = @ic.find_all_by_merchant_id(merchant_id)
+    revenue = 0
+    @ii.all.each do |inv_item|
+      item_merchants.each do |item|
+        if item.id == inv_item.item_id && invoice_paid_in_full?(inv_item.invoice_id)
+          revenue += inv_item.quantity.to_i * item.unit_price.to_i
+        end
+      end
+    end
+    revenue
+  end
 end

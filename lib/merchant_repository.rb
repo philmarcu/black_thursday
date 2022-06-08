@@ -10,7 +10,7 @@ class MerchantRepository
     @all = []
 
     CSV.foreach(file_path, headers: true, header_converters: :symbol) do |row|
-      @all << Merchant.new(:id => row[:id], :name => row[:name])
+      @all << Merchant.new(:id => row[:id], :name => row[:name], :created_at => row[:created_at])
     end
   end
 

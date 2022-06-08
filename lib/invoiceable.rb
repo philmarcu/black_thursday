@@ -45,4 +45,7 @@ module Invoiceable
   ((sum / total.to_f) * 100).round(2)
   end
 
+  def status_hash
+    @inv_c.all.group_by {|key| key.status}
+  end
 end

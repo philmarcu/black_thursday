@@ -8,7 +8,8 @@ RSpec.describe SalesAnalyst do
             :merchants => "./data/merchants.csv",
             :invoices => "./data/invoices.csv",
             :transactions => ("./data/transactions.csv"),
-            :customers => ("./data/customers.csv")
+            :customers => ("./data/customers.csv"),
+            :invoice_items => ("./data/invoice_items.csv")
           })
     @sa = @sales_engine.analyst
   end
@@ -169,4 +170,42 @@ end
    expect(@sa.invoice_status("returned")).to eq(13.5)
  end
 
+ it 'tells if an invoice is paid successfully or not' do
+   expect(@sa.invoice_paid_in_full?("4898")).to eq(true)
+   expect(@sa.invoice_paid_in_full?("1485")).to eq(true)
+   expect(@sa.invoice_paid_in_full?("628")).to eq(false)
+   expect(@sa.invoice_paid_in_full?("4602")).to eq(false)
+ end
+
+ it 'gives the total $ amount of the invoice' do
+   expect(@sa.invoice_total("2")).to eq(528913)
+   expect(@sa.invoice_total("5")).to eq(1582816)
+ end
+
+ it 'gives the total revenue by a specific date' do
+  expect(@sa.total_revenue_by_date("2004-08-20")).to eq(136350)
+  expect(@sa.total_revenue_by_date("2015-09-19")).to eq(54540)
+  expect(@sa.total_revenue_by_date("2012-03-27 14:54:09 UTC")).to eq(3340268)
+  expect(@sa.total_revenue_by_date("2012-03-27 14:58:08 UTC")).to eq(26734834)
+ end
+
+ it 'gets merchants with pending invoices' do
+  expect(@sa.merchants_with_pending_invoices).to be_a(Array)
+ end
+
+ it 'finds merchants with only one item' do
+   expect(@sa.merchants_with_only_one_item.size).to eq(243)
+   expect(@sa.merchants_with_only_one_item.first.name).to eq("jejum")
+ end
+
+ it 'gives merchants_with_only_one_item_registered_in_month' do
+   expect(@sa.merchants_with_only_one_item_registered_in_month("June").size).to eq(18)
+   expect(@sa.merchants_with_only_one_item_registered_in_month("February").size).to eq(19)
+   expect(@sa.merchants_with_only_one_item_registered_in_month("July")[0].name).to eq("WoodleyShop")
+ end
+
+ it 'gives revenue by the merchant' do
+   expect(@sa.revenue_by_merchant("12334315")).to eq(490190)
+   expect(@sa.revenue_by_merchant("12334403")).to eq(8471300)
+ end
 end
