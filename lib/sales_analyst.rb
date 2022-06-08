@@ -100,4 +100,10 @@ class SalesAnalyst
     end
     top_day
   end
+
+  def invoice_status(status)
+    percentage(@inv_c.find_all_by_status(status).length,
+    @inv_c.all.length)
+  end
+
 end

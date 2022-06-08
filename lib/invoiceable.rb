@@ -40,4 +40,9 @@ module Invoiceable
     end
     mc_inv_hash
   end
+
+  def percentage(sum, total)
+  ((sum / total.to_f) * 100).round(2)
+  end
+
 end
