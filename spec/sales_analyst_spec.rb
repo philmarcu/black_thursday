@@ -163,4 +163,10 @@ end
    expect(@sa.top_days_by_invoice_count).to eq(["Wednesday"])
  end
 
+ it 'gives the percentage of status' do
+   expect(@sa.invoice_status("pending")).to eq(29.55)
+   expect( @sa.invoice_status("shipped")).to eq(56.95)
+   expect(@sa.invoice_status("returned")).to eq(13.5)
+ end
+
 end
