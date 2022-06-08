@@ -48,4 +48,17 @@ module Itemable
     end
     sum_per_merc
   end
+
+  def item_merchant_hash
+    mc_ic_hash = {}
+    @ic.all.each do |item|
+      @mc.all.each do |merchant|
+        if item.merchant_id == merchant.id
+          mc_ic_hash[merchant] ||= 0
+          mc_ic_hash[merchant] += 1
+        end
+      end
+    end
+    mc_ic_hash
+  end
 end

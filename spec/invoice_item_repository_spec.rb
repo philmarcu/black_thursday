@@ -8,13 +8,12 @@ RSpec.describe InvoiceItemRepository do
   it 'exists & has attributes' do
     expect(@inv_ic).to be_a(InvoiceItemRepository)
     expect(@inv_ic.all).to be_a(Array)
-    expect(@inv_ic.all.length).to eq(21830)
   end
 
   it 'returns data from our invoice item array' do
     expect(@inv_ic.all.first.id).to eq("1")
     expect(@inv_ic.all.first).to be_a(InvoiceItem)
-    expect(@inv_ic.all.last.item_id).to eq("263519844")
+    expect(@inv_ic.all[1].item_id).to eq("263454779")
   end
 
   it 'can find an invoice item by id' do
@@ -22,7 +21,7 @@ RSpec.describe InvoiceItemRepository do
     expect(@inv_ic.find_by_id("491").item_id).to eq("263410671")
     expect(@inv_ic.find_by_id("140").quantity).to eq("1")
   end
-  #
+
   it 'can find all by item id' do
     expect(@inv_ic.find_all_by_item_id("263401817").length).to eq(23)
     expect(@inv_ic.find_all_by_item_id("263399953").length).to eq(20)
