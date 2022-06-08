@@ -40,6 +40,4 @@ module Invoiceable
     end
     mc_inv_hash
   end
-
-
 end

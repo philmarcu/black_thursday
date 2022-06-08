@@ -3,6 +3,7 @@ require 'bigdecimal'
 require_relative 'itemable'
 require_relative 'priceable'
 require_relative 'invoiceable'
+require_relative 'dayable'
 require_relative 'item_repository'
 require_relative 'merchant_repository'
 require_relative 'invoice_repository'
@@ -13,6 +14,7 @@ class SalesAnalyst
   include Itemable
     include Priceable
       include Invoiceable
+        include Dayable
 
   attr_reader :ic, :mc, :inv_c, :t_repo, :c
   def initialize(engine)
@@ -86,5 +88,16 @@ class SalesAnalyst
     invoices_per = merc_inv_hash
     merchs = invoices_per.select {|merchants, invoice| invoice < two_std_dev_below_inv_std_dev}
     merchs.keys
+  end
+
+  def top_days_by_invoice_count
+    top_day = []
+    day_hash = dayname_count_hash
+    day_hash.each do |key, value|
+      if value > one_std_dev_above_mean
+        top_day << key
+      end
+    end
+    top_day
   end
 end

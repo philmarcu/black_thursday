@@ -47,7 +47,6 @@ RSpec.describe SalesEngine do
   end
 
   it 'can return an array of invoices' do
-    require "pry"; binding.pry
     expect(@inv_c).to be_a(InvoiceRepository)
   end
 end

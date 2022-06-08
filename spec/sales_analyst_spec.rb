@@ -133,4 +133,34 @@ end
    expect(@sa.bottom_merchants_by_invoice_count).to be_a(Array)
    expect(@sa.bottom_merchants_by_invoice_count.size).to eq(4)
  end
+
+ it 'gives us days array of created invoices' do
+   expect(@sa.day_name_array).to be_a(Array)
+ end
+
+ it 'returns total_invoices_made_by_day' do
+   expect(@sa.total_invoices_made_by_day).to be_a(Array)
+ end
+
+ it 'returns square_sum_of_total_invoices' do
+   expect(@sa.square_sum_of_total_day_invs).to eq(1959)
+ end
+
+ it 'returns std_dev_of_invoices_by_day' do
+   expect(@sa.std_dev_of_invoices_by_day).to eq(18.06)
+ end
+
+ it 'returns one_std_dev_above_mean' do
+   expect(@sa.one_std_dev_above_mean).to eq(730.06)
+ end
+
+ it 'returns a day name with the invoice count' do
+   expect(@sa.dayname_count_hash).to be_a(Hash)
+ end
+
+ it 'gives us the top days by invoice count' do
+   expect(@sa.top_days_by_invoice_count).to be_a(Array)
+   expect(@sa.top_days_by_invoice_count).to eq(["Wednesday"])
+ end
+
 end
